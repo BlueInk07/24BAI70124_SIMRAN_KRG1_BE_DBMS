@@ -1,0 +1,76 @@
+-- Create BOOKS table
+CREATE TABLE BOOKS (
+    BOOK_ID INT PRIMARY KEY,
+    BOOK_NAME VARCHAR(50) NOT NULL,
+    AUTHOR_NAME VARCHAR(30) NOT NULL,
+    BOOK_COUNT INT CHECK (BOOK_COUNT > 0) NOT NULL
+);
+
+-- Insert book records
+INSERT INTO BOOKS VALUES
+(1, 'It Was Meant to Find You', 'Simran', 3),
+(2, 'The Silent Library', 'Arjun Rao', 5),
+(3, 'Echoes of Time', 'Neha Verma', 2),
+(4, 'Beyond the Pages', 'Rohan Mehta', 4),
+(5, 'Midnight Thoughts', 'Aditi Singh', 1);
+
+SELECT * FROM BOOKS;
+
+
+-- Create LIBRARY_VISITORS table
+CREATE TABLE LIBRARY_VISITORS (
+    USER_ID INT PRIMARY KEY,
+    NAME VARCHAR(30) NOT NULL,
+    AGE INT CHECK (AGE >= 17) NOT NULL,
+    EMAIL VARCHAR(40) UNIQUE NOT NULL
+);
+
+-- Insert visitor records
+INSERT INTO LIBRARY_VISITORS VALUES
+(501, 'Simran', 20, 'simran@gmail.com'),
+(502, 'Ansh Sharma', 21, 'ansh@gmail.com'),
+(503, 'Nitin Kumar', 19, 'nitin@gmail.com');
+
+SELECT * FROM LIBRARY_VISITORS;
+
+
+-- Create BOOK_ISSUE table
+CREATE TABLE BOOK_ISSUE (
+    BOOK_ISSUE_ID INT PRIMARY KEY,
+    USER_ID INT REFERENCES LIBRARY_VISITORS(USER_ID),
+    BOOK_ID INT REFERENCES BOOKS(BOOK_ID),
+    ISSUE_DATE DATE
+);
+
+-- Insert issue records
+INSERT INTO BOOK_ISSUE VALUES
+(101, 501, 1, '2026-01-09'),
+(102, 502, 3, '2026-01-10');
+
+SELECT * FROM BOOK_ISSUE;
+
+
+-- Create role LIBRARIAN
+CREATE ROLE LIBRARIAN
+WITH LOGIN PASSWORD 'SIMU';
+
+-- Check current user
+SELECT CURRENT_USER;
+
+
+-- Grant privileges
+GRANT SELECT, INSERT, UPDATE, DELETE
+ON BOOKS, LIBRARY_VISITORS, BOOK_ISSUE
+TO LIBRARIAN;
+
+
+-- Revoke privileges
+REVOKE UPDATE, DELETE
+ON BOOKS
+FROM LIBRARIAN;
+
+
+-- Final data view
+SELECT * FROM BOOKS;
+SELECT * FROM LIBRARY_VISITORS;
+SELECT * FROM BOOK_ISSUE;
