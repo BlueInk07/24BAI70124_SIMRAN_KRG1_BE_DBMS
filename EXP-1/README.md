@@ -23,3 +23,6 @@ Tables created with constraints 🗂️
 DDL, DML, and DCL commands executed ⚙️
 
 Role-based access control implemented 🔒
+
+## Screenshots
+![alt text](img.png)
